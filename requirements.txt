@@ -1,0 +1,22 @@
+# Python >= 3.11 (the reported results were produced with Python 3.12.3)
+numpy>=1.26
+pandas>=2.2
+scipy>=1.13
+xarray>=2024.1
+matplotlib>=3.8
+statsmodels>=0.14
+pingouin>=0.5.4
+dtw-python>=1.5
+# PyMC 5 / ArviZ 0.x are the generations used for the reported results; the
+# ArviZ 1.x API differs (LOO fields, az.compare, plotting) and is not targeted.
+pymc>=5.16,<6
+pytensor>=2.25,<3
+arviz>=0.18,<1
+netCDF4>=1.6
+jupyter
+ipywidgets
+# NUTS sampler used for the reported posteriors (optional but recommended;
+# without it PyMC's own NUTS sampler is used, see notebook Section 1)
+nutpie>=0.13
+jax>=0.4.30
+jaxlib>=0.4.30

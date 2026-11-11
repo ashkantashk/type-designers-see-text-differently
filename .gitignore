@@ -1,0 +1,10 @@
+# Cached posterior draws are several hundred MB each; distribute them through a
+# data repository (see README) rather than through git.
+results/*.nc
+
+# Jupyter / Python housekeeping
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.venv/
+venv/

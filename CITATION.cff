@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the associated article."
+title: "Do Type Designers See Text Differently? Short-Exposure Text Recognition, an Expert vs. Novice Performance Study — analysis code and data"
+type: software
+authors:
+  - family-names: Mangas
+    given-names: Héctor
+  - family-names: Tashk
+    given-names: Ashkan
+  - family-names: Bækgaard
+    given-names: Per
+  - family-names: Beier
+    given-names: Sofie
+# Add the repository URL and, once available, the article DOI:
+# repository-code: "https://github.com/<organisation>/<repository>"
+# preferred-citation:
+#   type: article
+#   doi: "10.xxxx/xxxxx"

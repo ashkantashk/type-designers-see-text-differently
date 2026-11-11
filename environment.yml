@@ -1,0 +1,23 @@
+name: tva-expert-novice
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - numpy>=1.26
+  - pandas>=2.2
+  - scipy>=1.13
+  - xarray>=2024.1
+  - matplotlib>=3.8
+  - statsmodels>=0.14
+  - pingouin>=0.5.4
+  - pymc>=5.16,<6
+  - pytensor>=2.25,<3
+  - arviz>=0.18,<1
+  - netcdf4>=1.6
+  - jupyter
+  - ipywidgets
+  - nutpie>=0.13
+  - jax>=0.4.30
+  - pip
+  - pip:
+      - dtw-python>=1.5
