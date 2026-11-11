@@ -132,4 +132,4 @@ See `CITATION.cff`. Please cite the article when using the data or code.
 
 ## License
 
-To be specified by the authors before publication.
+This repository is released under the [MIT License](LICENSE). Copyright (c) 2026 Héctor Mangas, Ashkan Tashk, Per Bækgaard and Sofie Beier.
