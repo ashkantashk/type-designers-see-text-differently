@@ -1,10 +1,13 @@
 # Do Type Designers See Text Differently?
 
+[![Posterior draws on Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.24152973.svg)](https://doi.org/10.5281/zenodo.24152973)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Analysis code and data for
 
 > Mangas, H., Tashk, A., Bækgaard, P., & Beier, S. *Do Type Designers See Text Differently? Short-Exposure Text Recognition, an Expert vs. Novice Performance Study.*
 
-![Graphical abstract: 17 type designers and 17 novices reported briefly shown five-letter strings in Helvetica and Klimax Plus; TVA curves show no credible group difference in Helvetica but an expert advantage of about 0.7 letters in Klimax Plus from 55 to 200 ms](docs/graphical_abstract.png)
+![Graphical abstract: 17 type designers and 17 novices reported five-letter strings shown for 10 to 200 ms in Helvetica and Klimax Plus. Posterior TVA curves with 95% credible bands show no credible group difference in Helvetica and a credible expert advantage in Klimax Plus from 55 to 200 ms, +0.72 letters at 100 ms.](docs/graphical_abstract.png)
 
 Seventeen professional type designers and seventeen novices reported briefly presented five-letter strings set in Helvetica and in the display typeface Klimax Plus. Performance is analysed with a hierarchical Bayesian version of the Theory of Visual Attention (TVA) whole-report model (capacity *K*, processing speed *C*, perceptual threshold *t0*), followed by frequentist, descriptive and sensitivity analyses. Everything reported in the Results section of the manuscript (Figures 2–12, Tables 2–5 and the statistics quoted in the text) is produced by the single notebook in this repository.
 
@@ -25,14 +28,15 @@ Seventeen professional type designers and seventeen novices reported briefly pre
 │   └── participant_info.csv                   # age, gender and vision per participant
 ├── docs/
 │   ├── graphical_abstract.png                 # the figure above
-│   └── make_graphical_abstract.py             # script that draws it
+│   └── make_graphical_abstract.py             # draws it from results/posterior_full.nc and the data
 ├── figures/        # written by the notebook, named by manuscript figure number
 ├── results/
-│   ├── *.nc        # cached posterior draws (NetCDF), see "Posterior draws" below
+│   ├── *.nc        # posterior draws (NetCDF), downloaded from Zenodo, see "Posterior draws" below
 │   └── tables/     # CSV versions of the manuscript tables, written by the notebook
 ├── requirements.txt
 ├── environment.yml
-└── CITATION.cff
+├── CITATION.cff
+└── LICENSE
 ```
 
 All paths inside the notebook are relative to the repository root, so the repository can be cloned to any location.
@@ -51,7 +55,9 @@ All paths inside the notebook are relative to the repository root, so the reposi
    pip install -r requirements.txt
    ```
 
-2. Start Jupyter **from the repository root** and run `TVA_ExpertNovice_Analysis.ipynb` from top to bottom (`Kernel → Restart & Run All`):
+2. Download the three posterior files from Zenodo into `results/` (see [Posterior draws](#posterior-draws) below). Without them the notebook re-samples the models.
+
+3. Start Jupyter **from the repository root** and run `TVA_ExpertNovice_Analysis.ipynb` from top to bottom (`Kernel → Restart & Run All`):
 
    ```bash
    jupyter lab TVA_ExpertNovice_Analysis.ipynb
@@ -61,11 +67,43 @@ All paths inside the notebook are relative to the repository root, so the reposi
 
 ### Posterior draws
 
-The three hierarchical models (baseline, full model, and the sensitivity refit with Expert #8 reinstated) are sampled with NUTS: 4 chains, 3,000 draws each after 1,000–1,500 tuning iterations, `target_accept = 0.99`, maximum tree depth 14, seed 1234. On a laptop each model takes on the order of one hour. The notebook saves the draws as `results/posterior_baseline.nc`, `results/posterior_full.nc` and `results/posterior_full_with_R8.nc`, and loads them instead of re-sampling whenever they are present.
+The posterior draws behind every Bayesian result in the manuscript are archived on Zenodo in a single record: **[doi:10.5281/zenodo.24152973](https://doi.org/10.5281/zenodo.24152973)**. They are not part of this git repository because two of the files exceed GitHub's 100 MB file-size limit. Download the three files into `results/` before running the notebook; the notebook then loads the draws instead of re-sampling.
+
+| File | Size | Contents |
+|------|------|----------|
+| `posterior_baseline.nc` | 219 MB | Baseline model (participant random effects only), including the pointwise log-likelihood used for LOO-CV |
+| `posterior_full.nc` | 289 MB | Full Font × Group model, including the pointwise log-likelihood |
+| `posterior_full_with_R8.nc` | 49 MB | Full model refitted with Expert #8 reinstated (sensitivity analysis, notebook Section 9.4) |
+
+Download them from the Zenodo page, or run one of the following from the repository root:
+
+```bash
+# Linux / macOS
+for f in posterior_baseline.nc posterior_full.nc posterior_full_with_R8.nc; do
+  curl -L -o "results/$f" "https://zenodo.org/records/24152973/files/$f?download=1"
+done
+```
+
+```powershell
+# Windows PowerShell
+foreach ($f in "posterior_baseline.nc", "posterior_full.nc", "posterior_full_with_R8.nc") {
+  curl.exe -L -o "results/$f" "https://zenodo.org/records/24152973/files/${f}?download=1"
+}
+```
+
+MD5 checksums, to verify the downloads (`md5sum results/*.nc` on Linux, `md5 results/*.nc` on macOS, `Get-FileHash -Algorithm MD5 results\*.nc` on Windows):
+
+```
+102f6f3c9621b51455fac73b06856082  posterior_baseline.nc
+3f451bb00c7b95d7626b6a47100d6898  posterior_full.nc
+2a5687ab915c2b49bc98b6fada677c64  posterior_full_with_R8.nc
+```
+
+All three models were sampled with NUTS: 4 chains, 3,000 draws each after 1,000–1,500 tuning iterations, `target_accept = 0.99`, maximum tree depth 14, seed 1234. Without the Zenodo files the notebook re-samples the models, which is slow at these settings, and saves the draws under the same file names.
 
 Two levels of reproduction are therefore possible:
 
-- **Exact.** Place the NetCDF files used for the manuscript in `results/` before running the notebook. They are too large for git (several hundred MB each, because they include the pointwise log-likelihood needed for LOO-CV) and are distributed separately; see the "Data and code availability" statement of the manuscript. With these files every number in the manuscript is reproduced digit for digit.
+- **Exact.** With the Zenodo files in `results/`, the notebook uses the posterior draws behind the manuscript, so the posterior summaries are the reported ones: for example, the population-level capacities in Figure 6 (4.295, 4.409, 3.117, 3.676), every row of Table 2, and the window in which experts credibly outperform novices under Klimax Plus (55–200 ms).
 - **Statistical.** Without the files, the notebook re-samples. The reported posteriors were drawn with the `nutpie` sampler (JAX backend), which the notebook uses when it is installed; otherwise PyMC's own NUTS sampler is used with the same settings. Either way the posterior summaries agree with the reported values up to Monte-Carlo error (the reported credible-interval limits are stable to about two decimals), while the data-dependent quantities listed below are exact.
 
 Quantities that do not depend on the posterior draws, and are therefore reproduced exactly on any platform: the trial accounting and duplicate audit, demographics, the timing-discrepancy summary, the mixed ANOVA, linear mixed models and Tukey tests (Table 4), the duration-matched comparisons (Figure 8), the independent per-participant TVA fits (Table 3, Figure S9), the DTW distances, bootstrap intervals and temporal-lead estimates (Figure 10), and the sensitivity power analysis.
@@ -128,7 +166,7 @@ One row per recorded participant: `Participants_ID`, `ParticipantID`, `group`, `
 
 ## Citation
 
-See `CITATION.cff`. Please cite the article when using the data or code.
+See `CITATION.cff`. Please cite the article when using the data or code, and the Zenodo record ([doi:10.5281/zenodo.24152973](https://doi.org/10.5281/zenodo.24152973)) when using the posterior draws.
 
 ## License
 
