@@ -6,7 +6,7 @@ R4_Expert,R4,Expert,52,M,Corrected
 R5_Expert,R5,Expert,27,M,Corrected
 R6_Expert,R6,Expert,35,F,Corrected
 R7_Expert,R7,Expert,30,F,Corrected
-R8_Expert,R8,Expert,33,,
+R8_Expert,R8,Expert,33,M,Corrected
 R9_Expert,R9,Expert,38,F,Normal
 R10_Expert,R10,Expert,35,M,Corrected
 R11_Expert,R11,Expert,36,M,Corrected
@@ -33,5 +33,5 @@ R13_Novice,R13,Novice,35,M,Corrected
 R14_Novice,R14,Novice,40,M,Corrected
 R15_Novice,R15,Novice,33,F,Corrected
 R16_Novice,R16,Novice,33,F,Corrected
-R17_Novice,R17,Novice,,,
+R17_Novice,R17,Novice,32,F,Corrected
 R18_Novice,R18,Novice,30,M,Corrected
