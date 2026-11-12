@@ -31,6 +31,7 @@ Seventeen professional type designers and seventeen novices reported briefly pre
 │   └── make_graphical_abstract.py             # draws it from results/posterior_full.nc and the data
 ├── figures/        # written by the notebook, named by manuscript figure number
 ├── results/
+│   ├── README.md   # where the posterior files come from
 │   ├── *.nc        # posterior draws (NetCDF), downloaded from Zenodo, see "Posterior draws" below
 │   └── tables/     # CSV versions of the manuscript tables, written by the notebook
 ├── requirements.txt
@@ -55,7 +56,7 @@ All paths inside the notebook are relative to the repository root, so the reposi
    pip install -r requirements.txt
    ```
 
-2. Download the three posterior files from Zenodo into `results/` (see [Posterior draws](#posterior-draws) below). Without them the notebook re-samples the models.
+2. Download the three posterior files from Zenodo into `results/` (see [Posterior draws](#posterior-draws) below). If any file is missing, the notebook stops in its first section and names the missing file.
 
 3. Start Jupyter **from the repository root** and run `TVA_ExpertNovice_Analysis.ipynb` from top to bottom (`Kernel → Restart & Run All`):
 
@@ -99,12 +100,12 @@ MD5 checksums, to verify the downloads (`md5sum results/*.nc` on Linux, `md5 res
 2a5687ab915c2b49bc98b6fada677c64  posterior_full_with_R8.nc
 ```
 
-All three models were sampled with NUTS: 4 chains, 3,000 draws each after 1,000–1,500 tuning iterations, `target_accept = 0.99`, maximum tree depth 14, seed 1234. Without the Zenodo files the notebook re-samples the models, which is slow at these settings, and saves the draws under the same file names.
+All three models were sampled with NUTS: 4 chains, 3,000 draws each after 1,000–1,500 tuning iterations, `target_accept = 0.99`, maximum tree depth 14, seed 1234. If a file is missing, the notebook stops in Section 1 instead of silently re-fitting the models. To re-fit them from scratch on purpose, set `RESAMPLE_MISSING_MODELS = True` in Section 1 of the notebook; re-sampling is slow at these settings, and the new draws are saved under the same file names.
 
 Two levels of reproduction are therefore possible:
 
 - **Exact.** With the Zenodo files in `results/`, the notebook uses the posterior draws behind the manuscript, so the posterior summaries are the reported ones: for example, the population-level capacities in Figure 6 (4.295, 4.409, 3.117, 3.676), every row of Table 2, and the window in which experts credibly outperform novices under Klimax Plus (55–200 ms).
-- **Statistical.** Without the files, the notebook re-samples. The reported posteriors were drawn with the `nutpie` sampler (JAX backend), which the notebook uses when it is installed; otherwise PyMC's own NUTS sampler is used with the same settings. Either way the posterior summaries agree with the reported values up to Monte-Carlo error (the reported credible-interval limits are stable to about two decimals), while the data-dependent quantities listed below are exact.
+- **Statistical.** With `RESAMPLE_MISSING_MODELS = True` and no files, the notebook re-fits the models. The reported posteriors were drawn with the `nutpie` sampler (JAX backend), which the notebook uses when it is installed; otherwise PyMC's own NUTS sampler is used with the same settings. Either way the posterior summaries agree with the reported values only up to Monte-Carlo error, while the data-dependent quantities listed below are exact.
 
 Quantities that do not depend on the posterior draws, and are therefore reproduced exactly on any platform: the trial accounting and duplicate audit, demographics, the timing-discrepancy summary, the mixed ANOVA, linear mixed models and Tukey tests (Table 4), the duration-matched comparisons (Figure 8), the independent per-participant TVA fits (Table 3, Figure S9), the DTW distances, bootstrap intervals and temporal-lead estimates (Figure 10), and the sensitivity power analysis.
 
